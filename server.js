@@ -15,7 +15,9 @@ app.use('/classifieds',messages);
 
 const port = process.env.PORT || 3000;
 
-
+app.get('/', (req, res, next) => {
+  console.log("Hello World");
+});
 
 app.listen(port, () => {
   console.log('Listening on port', port);

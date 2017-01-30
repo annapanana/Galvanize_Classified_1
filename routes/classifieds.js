@@ -10,6 +10,11 @@ const knex = require('../knex');
 router.get('/', (req, res, next) => {
   knex('classifieds')
     .then((result) => {
+      result = result.map((r) => {
+        delete r.created_at;
+        delete r.updated_at;
+        return r;
+      });
       res.send(result);
     });
 });
@@ -18,6 +23,8 @@ router.get('/:id/', (req, res, next) => {
   knex('classifieds')
     .where('id', req.params.id)
     .then((result) => {
+      delete result[0].created_at;
+      delete result[0].updated_at;
       res.send(result[0]);
     });
 });
@@ -28,7 +35,8 @@ router.post('/', (req, res, next) => {
   knex('classifieds')
     .insert(newPost, '*')
     .then((result) => {
-      // delete unnecessary returned data
+      delete result[0].created_at;
+      delete result[0].updated_at;
       res.send(result[0]);
     });
 });
@@ -40,6 +48,8 @@ router.patch('/:id/', (req, res, next) => {
     .where('id', req.params.id)
     .update(newPost, '*')
     .then((result) => {
+      delete result[0].created_at;
+      delete result[0].updated_at;
       res.send(result[0]);
     });
 });
@@ -53,6 +63,8 @@ router.delete('/:id/', (req, res, next) => {
         .where('id', req.params.id)
         .del()
         .then(() => {
+          delete result[0].created_at;
+          delete result[0].updated_at;
           res.send(post);
         });
     });
